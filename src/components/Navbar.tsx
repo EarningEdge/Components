@@ -5,10 +5,11 @@
 
   const Navbar: React.FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
 
-    const handleSubmenuClick = (category: string, item: string) => {
-      console.log(`${category} - ${item} clicked`);
-    };
+  // const handleSubmenuClick = (category: string, item: string) => {
+  //   console.log(`${category} - ${item} clicked`);
+  // };
 
     const dropdownOptions = {
       PCBWAY: [
@@ -124,163 +125,176 @@
         { name: "Misc", url: "https://components101.com/misc" },
       ],
     };
+    const toggleCategory = (category: string) => {
+      setOpenCategory(openCategory === category ? null : category);
+    };
 
     return (
-      <header>
-        {/* Top Red Bar */}
-        <div className="bg-red-600 text-slate-50 text-xs h-10 flex items-center justify-center">
-          <div className="w-full max-w-[1200px] flex items-center justify-between px-4 lg:px-0">
-            <div className="flex space-x-6 font-normal">
-              <a
-                href="https://components101.com/about-us"
-                className="hover:underline"
-              >
-                About Us
-              </a>
-              <a
-                href="https://components101.com/contact"
-                className="hover:underline"
-              >
-                Contact
-              </a>
-            </div>
-            <div className="flex space-x-4">
-              <a
-                href="https://www.facebook.com/electronicscomponents101"
-                className="hover:text-gray-300"
-              >
-                <FaFacebook className="w-4 h-4" />
-              </a>
-              <a
-                href="https://x.com/components101"
-                className="hover:text-gray-300"
-              >
-                <FaTwitterSquare className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.pinterest.com/components101/"
-                className="hover:text-gray-300"
-              >
-                <FaPinterest className="w-4 h-4" />
-              </a>
-            </div>
+      <header className="fixed top-0 left-0 w-full z-50">
+      {/* Top Red Bar */}
+      <div className="bg-red-600 text-slate-50 text-xs py-2">
+        <div className="w-full max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between px-4">
+          <div className="flex space-x-4 sm:space-x-6 font-normal mb-2 sm:mb-0">
+            <a href="https://components101.com/about-us" className="hover:underline">
+              About Us
+            </a>
+            <a href="https://components101.com/contact" className="hover:underline">
+              Contact
+            </a>
+          </div>
+          <div className="flex space-x-4">
+            <a href="https://www.facebook.com/electronicscomponents101" className="hover:text-gray-300">
+              <FaFacebook className="w-4 h-4" />
+            </a>
+            <a href="https://x.com/components101" className="hover:text-gray-300">
+              <FaTwitterSquare className="w-4 h-4" />
+            </a>
+            <a href="https://www.pinterest.com/components101/" className="hover:text-gray-300">
+              <FaPinterest className="w-4 h-4" />
+            </a>
           </div>
         </div>
+      </div>
 
-        {/* White Navbar */}
-        <div className="bg-slate-100 text-black shadow h-16 flex items-center justify-center">
-          <div className="w-full max-w-[1200px] flex items-center justify-between py-3 px-4 lg:px-0">
-            
-              
-            <a href="https://components101.com" className="flex items-center">
-              <img 
-                src={img} 
-                alt="Logo" 
-                className="scale-150 " 
-              />
-            </a>
-            <div className="flex items-center space-x-10 lg:mx-28">
-              <nav className="hidden lg:flex items-center space-x-4 text-[0.85rem] font-semibold text-slate-600">
-                <div className="flex space-x-6 w-full text-nowrap">
-                  <a
-                    href="https://components101.com/latest-news"
-                    className="h-auto w-auto max-h-10 object-containtext-red-600 transition-colors duration-300"
-                  >
-                    NEW PRODUCTS
-                  </a>
-                  <a
-                    href="https://components101.com/articles"
-                    className="hover:text-red-600 transition-colors duration-300"
-                  >
-                    DESIGN TIPS
-                  </a>
-                </div>
+      {/* White Navbar */}
+      <div className="bg-slate-100 text-black shadow h-16 flex items-center justify-center">
+        <div className="w-full max-w-[1200px] flex items-center justify-between py-3 px-4">
+          <a href="https://components101.com" className="flex items-center">
+            <img 
+              src={img} 
+              alt="Logo" 
+              className="max-h-8 w-auto object-contain" 
+            />
+          </a>
 
-                {Object.entries(dropdownOptions).map(([category, options]) => (
-                  <div key={category} className="relative group">
-                    <div className="flex items-center space-x-2">
-                      <a
-                        href="#"
-                        className="hover:text-red-600 transition-colors duration-300"
-                      >
-                        {category}
-                        {category === "PCBWAY" && (
-                          <span className="ml-2 text-xs bg-red-600 text-white px-2 py-1 rounded-full">
-                            New
-                          </span>
-                        )}
-                      </a>
-                      <ChevronDown className="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300" />
-                    </div>
-                    <div className="absolute left-0 mt-0 hidden group-hover:block bg-white text-gray-600 text-sm rounded shadow-lg z-20">
-                      {options.map((option) => (
-                        <a
-                          key={option.name}
-                          href={option.url}
-                          {...(category === "PCBWAY" ? { target: "_blank" } : {})}
-                          rel="noopener noreferrer"
-                          className="block py-2 px-4 text-nowrap hover:bg-gray-200 hover:text-red-600 transition-colors duration-300"
-                        >
-                          {option.name}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </nav>
+          {/* Mobile Menu Toggle */}
+          <button
+            className="lg:hidden text-black focus:outline-none"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? "X" : <Menu className="w-6 h-6" />}
+          </button>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-4 text-[0.85rem] font-semibold text-slate-600">
+            <div className="flex space-x-6 text-nowrap">
+              <a
+                href="https://components101.com/latest-news"
+                className="hover:text-red-600 transition-colors duration-300"
+              >
+                NEW PRODUCTS
+              </a>
+              <a
+                href="https://components101.com/articles"
+                className="hover:text-red-600 transition-colors duration-300"
+              >
+                DESIGN TIPS
+              </a>
             </div>
-
-            <button
-              className="lg:hidden text-black focus:outline-none"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              <Menu className="w-6 h-6" />
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        <div
-          className={`lg:hidden bg-slate-50 transition-all duration-300 ${
-            isMobileMenuOpen ? "max-h-screen" : "max-h-0 overflow-hidden"
-          }`}
-        >
-          <nav className="flex flex-col items-start space-y-2 py-4 px-6 text-sm font-normal">
-            <a
-              href="https://components101.com/latest-news"
-              className="w-full hover:text-red-600 transition-colors duration-300 "
-            >
-              NEW PRODUCTS
-            </a>
-            <a
-              href="https://components101.com/articles"
-              className="w-full hover:text-red-600 transition-colors duration-300"
-            >
-              DESIGN TIPS
-            </a>
 
             {Object.entries(dropdownOptions).map(([category, options]) => (
-              <details key={category} className="w-full">
-                <summary className="cursor-pointer hover:text-red-600 transition-colors duration-300">
-                  {category}
-                </summary>
-                <div className="pl-4 mt-2 space-y-1">
+              <div key={category} className="relative group">
+                <div className="flex items-center space-x-2">
+                  <a
+                    href="https://components101.com"
+                    className="hover:text-red-600 transition-colors duration-300"
+                  >
+                    {category}
+                    {category === "PCBWAY" && (
+                      <span className="ml-2 text-xs bg-red-600 text-white px-2 py-1 rounded-full">
+                        New
+                      </span>
+                    )}
+                  </a>
+                  <ChevronDown className="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300" />
+                </div>
+                <div className="absolute left-0 mt-0 hidden group-hover:block bg-white text-gray-600 text-sm rounded shadow-lg z-20">
                   {options.map((option) => (
                     <a
                       key={option.name}
                       href={option.url}
-                      {...(category === "PCBWAY" ? { target: "_blank" } : {})}
-                      className="block px-4 py-2 hover:bg-gray-200 hover:text-red-600 transition-colors duration-300"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block py-2 px-4 text-nowrap hover:bg-gray-200 hover:text-red-600 transition-colors duration-300"
                     >
                       {option.name}
                     </a>
                   ))}
                 </div>
-              </details>
+              </div>
             ))}
           </nav>
         </div>
-      </header>
+      </div>
+
+      {/* Mobile Menu - Full Screen Overlay */}
+      <div 
+        className={`
+          lg:hidden 
+          fixed 
+          inset-0 
+          bg-white 
+          z-40 
+          overflow-y-auto 
+          transition-transform 
+          duration-300 
+          ease-in-out 
+          ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
+          pt-20
+        `}
+      >
+        <nav className="px-6 space-y-4">
+          <a
+            href="https://components101.com/latest-news"
+            className="block py-3 text-lg hover:text-red-600 transition-colors"
+          >
+            NEW PRODUCTS
+          </a>
+          <a
+            href="https://components101.com/articles"
+            className="block py-3 text-lg hover:text-red-600 transition-colors"
+          >
+            DESIGN TIPS
+          </a>
+
+          {Object.entries(dropdownOptions).map(([category, options]) => (
+            <div key={category} className="border-b pb-2">
+              <div 
+                onClick={() => toggleCategory(category)}
+                className="flex justify-between items-center py-3 text-lg cursor-pointer"
+              >
+                <span className="flex items-center">
+                  {category}
+                  {category === "PCBWAY" && (
+                    <span className="ml-2 text-xs bg-red-600 text-white px-2 py-1 rounded-full">
+                      New
+                    </span>
+                  )}
+                </span>
+                <ChevronDown 
+                  className={`w-5 h-5 transform transition-transform duration-300 
+                    ${openCategory === category ? 'rotate-180' : ''}`} 
+                />
+              </div>
+              {openCategory === category && (
+                <div className="pl-4 space-y-2">
+                  {options.map((option) => (
+                    <a
+                      key={option.name}
+                      href={option.url}
+                       target="_blank" 
+                       className="block py-2 hover:text-red-600 transition-colors"
+                    >
+                      {option.name}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+      </div>
+    </header>
     );
   };
 
